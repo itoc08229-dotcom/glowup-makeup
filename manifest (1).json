@@ -1,0 +1,19 @@
+{
+  "name": "GlowUp Makeup - Tutorial Makeup",
+  "short_name": "GlowUp Makeup",
+  "description": "Aplikasi tutorial makeup untuk pemula.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fff4f7",
+  "theme_color": "#d96b8a",
+  "lang": "id",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

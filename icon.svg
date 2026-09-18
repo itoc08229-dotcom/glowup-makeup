@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="512"
+     height="512"
+     viewBox="0 0 512 512">
+
+  <rect width="512"
+        height="512"
+        rx="110"
+        fill="#fff4f7"/>
+
+  <circle cx="256"
+          cy="256"
+          r="175"
+          fill="#f8c4d4"/>
+
+  <!-- Lipstick -->
+  <rect x="190"
+        y="175"
+        width="70"
+        height="180"
+        rx="12"
+        fill="#d96b8a"/>
+
+  <rect x="180"
+        y="345"
+        width="90"
+        height="35"
+        rx="10"
+        fill="#b84f70"/>
+
+  <path d="M190 175
+           L205 140
+           L260 155
+           L260 175 Z"
+        fill="#c95a7a"/>
+
+  <!-- Makeup Brush -->
+  <rect x="300"
+        y="155"
+        width="24"
+        height="205"
+        rx="12"
+        transform="rotate(25 312 257)"
+        fill="#8b6b61"/>
+
+  <ellipse cx="350"
+           cy="145"
+           rx="35"
+           ry="55"
+           transform="rotate(25 350 145)"
+           fill="#dca6b7"/>
+
+  <!-- Sparkles -->
+  <path d="M350 270
+           L360 295
+           L385 305
+           L360 315
+           L350 340
+           L340 315
+           L315 305
+           L340 295 Z"
+        fill="white"/>
+
+  <path d="M145 245
+           L152 262
+           L169 269
+           L152 276
+           L145 293
+           L138 276
+           L121 269
+           L138 262 Z"
+        fill="white"/>
+
+</svg>

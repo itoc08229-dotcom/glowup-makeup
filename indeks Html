@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Catatan Harianku</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    background: #f2f4f7;
+    color: #222;
+}
+
+header {
+    background: #6c63ff;
+    color: white;
+    padding: 25px 20px;
+    text-align: center;
+    border-radius: 0 0 25px 25px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+header p {
+    margin: 8px 0 0;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    padding: 18px;
+    border-radius: 18px;
+    margin-bottom: 18px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 13px;
+    margin-top: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    font-size: 16px;
+    outline: none;
+}
+
+textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+button {
+    border: none;
+    padding: 12px 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.save {
+    background: #6c63ff;
+    color: white;
+    width: 100%;
+}
+
+.delete {
+    background: #ff5c5c;
+    color: white;
+    margin-top: 10px;
+}
+
+.search {
+    margin-bottom: 5px;
+}
+
+.note {
+    border-left: 5px solid #6c63ff;
+    padding: 12px;
+    margin-top: 12px;
+    background: #f8f8ff;
+    border-radius: 10px;
+}
+
+.note h3 {
+    margin: 0 0 5px;
+}
+
+.date {
+    color: #777;
+    font-size: 13px;
+}
+
+.empty {
+    text-align: center;
+    color: #777;
+    padding: 20px;
+}
+
+.hasil {
+    font-size: 14px;
+    color: #777;
+    margin-top: 5px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>📖 Catatan Harianku</h1>
+    <p>Simpan cerita dan pengalamanmu setiap hari</p>
+</header>
+
+<div class="container">
+
+    <!-- Tulis Catatan -->
+    <div class="card">
+
+        <h2>✍️ Tulis Catatan</h2>
+
+        <label>Judul</label>
+
+        <input
+            type="text"
+            id="judul"
+            placeholder="Contoh: Hari yang menyenangkan"
+        >
+
+        <label>Isi catatan</label>
+
+        <textarea
+            id="isi"
+            placeholder="Ceritakan harimu di sini..."
+        ></textarea>
+
+        <button
+            class="save"
+            onclick="simpanCatatan()">
+            💾 Simpan Catatan
+        </button>
+
+    </div>
+
+
+    <!-- Daftar Catatan -->
+    <div class="card">
+
+        <h2>📚 Catatan Saya</h2>
+
+        <!-- PENCARIAN -->
+        <input
+            type="search"
+            id="pencarian"
+            class="search"
+            placeholder="🔍 Cari catatan..."
+            oninput="cariCatatan()"
+        >
+
+        <div
+            id="hasil"
+            class="hasil">
+        </div>
+
+        <div id="daftarCatatan"></div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+let catatan =
+JSON.parse(localStorage.getItem("catatanHarian")) || [];
+
+tampilkanCatatan(catatan);
+
+
+/* =========================
+   SIMPAN CATATAN
+========================= */
+
+function simpanCatatan() {
+
+    const judul =
+        document.getElementById("judul").value.trim();
+
+    const isi =
+        document.getElementById("isi").value.trim();
+
+    if (judul === "" || isi === "") {
+
+        alert("Judul dan isi catatan harus diisi!");
+
+        return;
+    }
+
+    const tanggal =
+        new Date().toLocaleDateString("id-ID", {
+
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+
+        });
+
+
+    const data = {
+
+        judul: judul,
+        isi: isi,
+        tanggal: tanggal
+
+    };
+
+
+    catatan.unshift(data);
+
+
+    localStorage.setItem(
+        "catatanHarian",
+        JSON.stringify(catatan)
+    );
+
+
+    document.getElementById("judul").value = "";
+
+    document.getElementById("isi").value = "";
+
+
+    tampilkanCatatan(catatan);
+
+
+    alert("Catatan berhasil disimpan! ✅");
+}
+
+
+/* =========================
+   TAMPILKAN CATATAN
+========================= */
+
+function tampilkanCatatan(data) {
+
+    const daftar =
+        document.getElementById("daftarCatatan");
+
+
+    if (data.length === 0) {
+
+        daftar.innerHTML = `
+            <div class="empty">
+                📭 Catatan tidak ditemukan.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    daftar.innerHTML = "";
+
+
+    data.forEach((item) => {
+
+        const index =
+            catatan.indexOf(item);
+
+
+        const div =
+            document.createElement("div");
+
+
+        div.className = "note";
+
+
+        div.innerHTML = `
+
+            <h3>${item.judul}</h3>
+
+            <div class="date">
+                📅 ${item.tanggal}
+            </div>
+
+            <p>${item.isi}</p>
+
+            <button
+                class="delete"
+                onclick="hapusCatatan(${index})">
+
+                🗑️ Hapus
+
+            </button>
+
+        `;
+
+
+        daftar.appendChild(div);
+
+    });
+}
+
+
+/* =========================
+   FITUR PENCARIAN
+========================= */
+
+function cariCatatan() {
+
+    const kata =
+        document
+        .getElementById("pencarian")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    if (kata === "") {
+
+        document.getElementById("hasil").textContent = "";
+
+        tampilkanCatatan(catatan);
+
+        return;
+    }
+
+
+    const hasil =
+        catatan.filter(item =>
+
+            item.judul
+            .toLowerCase()
+            .includes(kata)
+
+            ||
+
+            item.isi
+            .toLowerCase()
+            .includes(kata)
+
+    );
+
+
+    document.getElementById("hasil").textContent =
+        hasil.length +
+        " catatan ditemukan";
+
+
+    tampilkanCatatan(hasil);
+}
+
+
+/* =========================
+   HAPUS CATATAN
+========================= */
+
+function hapusCatatan(index) {
+
+    if (
+        confirm(
+            "Yakin ingin menghapus catatan ini?"
+        )
+    ) {
+
+        catatan.splice(index, 1);
+
+
+        localStorage.setItem(
+            "catatanHarian",
+            JSON.stringify(catatan)
+        );
+
+
+        cariCatatan();
+
+    }
+}
+
+</script>
+
+</body>
+</html>
